@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 tray-item = "0.6.0"
 rodio = "0.15.0"
+glib = "0.15.5"
+cairo-rs = "0.15.1"
+gtk = { git = "https://github.com/gtk-rs/gtk3-rs.git" }
