@@ -1,9 +1,21 @@
 use tray_item::TrayItem;
 
 fn main() {
-    create_tray_icon();
-}
-
-fn create_tray_icon() {
     gtk::init().unwrap();
+
+    let mut tray = TrayItem::new("Tray Example", "accessories-calculator").unwrap();
+
+    tray.add_label("Tray Label").unwrap();
+
+    tray.add_menu_item("Hello", || {
+        println!("Hello!");
+    })
+    .unwrap();
+
+    tray.add_menu_item("Quit", || {
+        gtk::main_quit();
+    })
+    .unwrap();
+
+    gtk::main();
 }

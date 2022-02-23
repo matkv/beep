@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tray-item = "0.6.0"
 rodio = "0.15.0"
 glib = "0.15.5"
 cairo-rs = "0.15.1"
-gtk = { git = "https://github.com/gtk-rs/gtk3-rs.git" }
+gtk = "0.15.4"
+tray-item = "0.7.0"
