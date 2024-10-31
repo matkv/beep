@@ -1,11 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"embed"
 	"os"
+	"sync"
+	"time"
 
 	"github.com/getlantern/systray"
 	"github.com/getlantern/systray/example/icon"
+	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/speaker"
+	"github.com/gopxl/beep/wav"
 )
 
 func main() {
@@ -27,7 +32,7 @@ func setup() {
 	go func() {
 		for {
 			<-beepButton.ClickedCh
-			playBeep() // Play sound when "Play Beep" button is clicked
+			playSound()
 		}
 	}()
 
@@ -40,9 +45,47 @@ func setup() {
 	}()
 }
 
-func playBeep() {
-	fmt.Println("Playing beep sound!")
+//go:embed beep.wav
+var soundFile embed.FS
+var speakerInitialized bool
+
+func playSound() {
+	if !speakerInitialized {
+		sampleRate := beep.SampleRate(48000)
+		if err := speaker.Init(sampleRate, sampleRate.N(time.Second/10)); err != nil {
+			panic(err)
+		}
+		speakerInitialized = true
+	}
+
+	// Open the embedded sound file
+	f, err := soundFile.Open("beep.wav")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	// Decode the WAV file
+	decoder, _, err := wav.Decode(f)
+	if err != nil {
+		panic(err)
+	}
+	defer decoder.Close()
+
+	// wait group to wait for the sound to finish
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	speaker.Play(beep.Seq(decoder, beep.Callback(func() {
+		wg.Done() // playback done
+	})))
+
+	// Wait for the sound to finish
+	wg.Wait()
 }
 
 func onExit() {
+	if speakerInitialized {
+		speaker.Close()
+	}
 }
