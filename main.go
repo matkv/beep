@@ -32,7 +32,7 @@ func onReady() {
 func setup() {
 	systray.SetTitle("Beep")
 	systray.SetTooltip("Play a sound to wake up the studio monitors")
-	systray.SetIcon(playIcon) // TODO - change this to a custom icon
+	systray.SetIcon(playIcon)
 
 	beepButton := systray.AddMenuItem("Play Beep", "Play a beep sound")
 	beepButton.SetIcon(playIcon)
