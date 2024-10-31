@@ -7,4 +7,9 @@ To avoid opening a console at application start, use this compile flag (for Wind
 go build -ldflags -H=windowsgui
 ```
 
-Or download a pre-built .exe in the [releases](https://github.com/matkv/beep/releases)
+Or download a pre-built .exe in the [releases](https://github.com/matkv/beep/releases).
+
+---
+
+- Library used for creating the system tray icon: [https://github.com/getlantern/systray](https://github.com/getlantern/systray)
+- Libary used to play the sound: [https://github.com/gopxl/beep](https://github.com/gopxl/beep)
